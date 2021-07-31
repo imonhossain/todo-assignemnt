@@ -13,6 +13,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true, }))
 
 //connect to mongoDb
+//mongodb://localhost:27017/todo
+//mongodb://mongo:27017/todo
 const uri = process.env.MONGO_URI
 mongoose.connect(uri, {
     useNewUrlParser: true,
@@ -28,12 +30,12 @@ mongoose.connection.on('error', (err) => {
 })
 
 //route and run
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 8080
 const todoRoutes = require('./routers/todoRoutes')
 app.use('/todo', todoRoutes)
 app.use('*', (req, res) => {
     res.send({
-        status: 'hmm',
+        status: false,
         message: 'Pls, check api endpoint'
     })
 })

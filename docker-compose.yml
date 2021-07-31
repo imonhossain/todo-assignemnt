@@ -1,0 +1,20 @@
+version: '2'
+services:
+  # client:
+  #   build: ./client
+  #   ports:
+  #     - '80:80'
+  #   depends_on:
+  #     - api
+  api:
+    build: ./api
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: todo
+    ports:
+      - '27017:27017'

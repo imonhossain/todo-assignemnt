@@ -9,13 +9,9 @@ const todoShcema = new Shema({
         minlength: 1,
         trim: true,
     },
-    date: {
-        type: String,
-        required: true,
-    },
     showComment: {
         type: Boolean,
-        required: true,
+        required: false,
     },
     comments: [{
         type: String
