@@ -1,16 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { convertDateToString } from '../services/Utilities';
+import axios from 'axios';
 import {
   add,
   remove,
+  setTodo,
   selectTodos,
 } from './todoSlice';
 
 export function Todo() {
-  const todos = useSelector(selectTodos);
+  const [fetchData, setFetchData] = useState(false);
+  let todos = useSelector(selectTodos);
   const dispatch = useDispatch();
   const [name, setName] = useState('');
+
+  useEffect(() => {
+    try {
+      axios.get("/todo").then(result => {
+        let { data } = result.data;
+        dispatch(setTodo(data));
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }, [])
+
+
+
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -48,7 +65,7 @@ export function Todo() {
                 </div>
                 <div className='leading-tight text-gray-500 pl-2'>
                   <h6>{todo.name}</h6>
-                  <small>Date: {convertDateToString(todo.date)}</small>
+                  {/* <small>Date: {convertDateToString(todo.date)}</small> */}
                 </div>
               </div>
               <div className="flex-none pr-2">
