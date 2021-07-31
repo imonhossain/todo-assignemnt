@@ -11,6 +11,7 @@ import {
 import { AddTodo } from '../../app/components/addTodo';
 import { toastError, toastSuccess } from '../../app/services/ToasterService';
 import { Votes } from '../../app/components/votes';
+import { TodoComments } from '../../app/components/todoComments';
 
 export function Todo() {
   let todos = useSelector(selectTodos);
@@ -50,8 +51,6 @@ export function Todo() {
     }
   }
 
-
-
   return (
     <div className="bg-white rounded-xl p-4 w-80 shadow" style={{ width: 440 }}>
       <AddTodo />
@@ -61,7 +60,7 @@ export function Todo() {
           <div key={index} className="bg-gray-100 rounded-xl p-2 mb-2 bg-gray-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center pl-2">
-                <Votes todo={todo} index={index} />
+                <Votes todo={todo} />
                 <div className='leading-tight text-gray-500 pl-2'>
                   <h6>{todo.name}</h6>
                   <small>Date: {todo.createdAt ? convertDateToString(todo.createdAt) : null}</small>
@@ -86,23 +85,7 @@ export function Todo() {
             </div>
             <div className="pl-12">
               {
-                todo.showComment ? <div>
-                  <div className="flex">
-                    {/* <span>Post Comment: </span> */}
-                    <input
-                      type="text"
-                      className="flex-initial rounded-xl p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-600 w-full mr-2 pl-4"
-                    />
-                    <button
-                      className="flex-initial bg-blue-100 hover:bg-blue-200 rounded-xl p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-600 w-20"
-                    >
-                      Send
-                    </button>
-                  </div>
-                  <ul>{todo.comments.map((comment, commentIndex) => (
-                    <li key={commentIndex}>{commentIndex + 1}. {comment}</li>
-                  ))}</ul>
-                </div> : null
+                todo.showComment ? <TodoComments todo={todo} /> : null
               }
 
             </div>
