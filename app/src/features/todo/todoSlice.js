@@ -19,12 +19,20 @@ const todoSlice = createSlice({
       state.items.splice(action.payload, 1);
     },
     setTodo(state, action) {
-      console.log("action", action);
       state.items = action.payload;
-    }
+    },
+    commentFlagChange(state, action) {
+      const index = action.payload;
+      state.items[index].showComment = !state.items[index].showComment;
+    },
+    update(state, action) {
+      const todo = action.payload;
+      const index = state.items.findIndex(item => item._id === todo._id);
+      state.items[index] = todo;
+    },
   },
 });
 
-export const { add, remove, setTodo } = todoSlice.actions;
+export const { add, remove, setTodo, commentFlagChange, update } = todoSlice.actions;
 export const selectTodos = (state) => state.todo.items;
 export default todoSlice.reducer;

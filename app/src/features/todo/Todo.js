@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { convertDateToString } from '../../app/services/Utilities';
 import axios from 'axios';
 import {
-  add,
   remove,
   setTodo,
   selectTodos,
+  commentFlagChange
 } from './todoSlice';
 import { AddTodo } from '../../app/components/addTodo';
+import { toastError, toastSuccess } from '../../app/services/ToasterService';
+import { Votes } from '../../app/components/votes';
 
 export function Todo() {
   let todos = useSelector(selectTodos);
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
-
   useEffect(() => {
     try {
       axios.get("/todo").then(result => {
@@ -24,16 +24,33 @@ export function Todo() {
     } catch (error) {
       console.log(error);
     }
-  }, [])
+  }, []);
+
+  const removeTodoFromStore = (index) => {
+    dispatch(remove(index));
+  }
+
+  const onClickComment = (index) => {
+    dispatch(commentFlagChange(index));
+  }
+
+  const onClickRemove = async (index, id) => {
+    if (!id) {
+      removeTodoFromStore(index);
+      return;
+    }
+    const result = await axios.delete(
+      `/todo/delete/${id}`
+    );
+    if (result && result.data && result.data.status === true) {
+      toastSuccess(result.data.message);
+      removeTodoFromStore(index);
+    } else {
+      toastError("Faild to delete");
+    }
+  }
 
 
-
-
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    dispatch(add(name));
-    setName('');
-  };
 
   return (
     <div className="bg-white rounded-xl p-4 w-80 shadow" style={{ width: 440 }}>
@@ -44,29 +61,27 @@ export function Todo() {
           <div key={index} className="bg-gray-100 rounded-xl p-2 mb-2 bg-gray-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center pl-2">
-                <div className="vote-icons text-center">
-                  <button className="vote-icon-up"><svg fill="#bbb" aria-hidden="true" width="36" height="25" viewBox="0 0 40 25"><path d="M2 26h32L18 10 2 26z"></path></svg></button>
-                  <div className="total-vot" style={{ lineHeight: 0.7 }}>{todo.vote}</div>
-                  <button className="vote-icon-down"><svg fill="#bbb" aria-hidden="true" width="36" height="25" viewBox="0 0 40 25"><path d="M2 10h32L18 26 2 10z"></path></svg></button>
-                </div>
+                <Votes todo={todo} index={index} />
                 <div className='leading-tight text-gray-500 pl-2'>
                   <h6>{todo.name}</h6>
-                  {/* <small>Date: {convertDateToString(todo.date)}</small> */}
+                  <small>Date: {todo.createdAt ? convertDateToString(todo.createdAt) : null}</small>
                 </div>
               </div>
-              <div className="flex-none pr-2">
+              <div className="flex">
                 <div
-                  onClick={() => dispatch(remove(index))}
-                  className="text-red-500 hover:text-red-600 float-right cursor-pointer pr-2 text-2xl"
-                >
-                  <span className="fa fa-minus-circle" />
-                </div>
-                <div
-                  onClick={() => dispatch(remove(index))}
-                  className="text-gray-500 hover:text-gray-600 float-right cursor-pointer pr-2 text-2xl"
+                  onClick={() => onClickComment(index)}
+                  className="text-gray-500 hover:text-gray-600  cursor-pointer pr-2 text-2xl"
                 >
                   <span className="fa fa-comment" />
                 </div>
+
+                <div
+                  onClick={() => onClickRemove(index, todo._id)}
+                  className="text-red-500 hover:text-red-600  cursor-pointer pr-2 text-2xl"
+                >
+                  <span className="fa fa-minus-circle" />
+                </div>
+
               </div>
             </div>
             <div className="pl-12">

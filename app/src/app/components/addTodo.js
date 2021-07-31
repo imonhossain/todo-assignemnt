@@ -26,7 +26,6 @@ export function AddTodo() {
       dispatch(add(todoObj));
       setName('');
     }
-
   };
 
   return (
