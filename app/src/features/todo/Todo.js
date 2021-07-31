@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { convertDateToString } from '../services/Utilities';
+import { convertDateToString } from '../../app/services/Utilities';
 import axios from 'axios';
 import {
   add,
@@ -8,9 +8,9 @@ import {
   setTodo,
   selectTodos,
 } from './todoSlice';
+import { AddTodo } from '../../app/components/addTodo';
 
 export function Todo() {
-  const [fetchData, setFetchData] = useState(false);
   let todos = useSelector(selectTodos);
   const dispatch = useDispatch();
   const [name, setName] = useState('');
@@ -37,21 +37,7 @@ export function Todo() {
 
   return (
     <div className="bg-white rounded-xl p-4 w-80 shadow" style={{ width: 440 }}>
-      <form onSubmit={handleSubmit}>
-        <div className="flex">
-          <input
-            type="text"
-            className="flex-initial bg-gray-100 rounded-xl p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-600 w-full mr-2 pl-4"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <button
-            className="flex-initial bg-blue-100 hover:bg-blue-200 rounded-xl p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-600 w-20"
-          >
-            <span className="fa fa-plus text-blue-500" />
-          </button>
-        </div>
-      </form>
+      <AddTodo />
       <div>
         {todos.length === 0 && <div>No todos yet</div>}
         {todos.map((todo, index) => (

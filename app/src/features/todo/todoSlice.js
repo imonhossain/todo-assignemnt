@@ -13,9 +13,7 @@ const todoSlice = createSlice({
   initialState,
   reducers: {
     add(state, action) {
-      state.items.push({
-        name: action.payload
-      });
+      state.items.push(action.payload);
     },
     remove(state, action) {
       state.items.splice(action.payload, 1);

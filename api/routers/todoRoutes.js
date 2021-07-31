@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 
 //post todo item
 router.post('/add', async (req, res) => {
-    const { name, date, comments, vote, showComment } = req.body
+    const { name, comments, vote, showComment } = req.body
     console.log(req.body);
     if (!name) {
         return res.status(400).send({
@@ -29,7 +29,7 @@ router.post('/add', async (req, res) => {
     }
 
     try {
-        const newTodo = new Todo({ name, date, comments, vote, showComment })
+        const newTodo = new Todo({ name, comments, vote, showComment })
         console.log("newTodo", newTodo);
         await newTodo.save({ validateBeforeSave: true })
         return res.send({
