@@ -20,7 +20,6 @@ router.get('/', async (req, res) => {
 //post todo item
 router.post('/add', async (req, res) => {
     const { name, comments, vote, showComment } = req.body
-    console.log(req.body);
     if (!name) {
         return res.status(400).send({
             status: false,
@@ -30,14 +29,13 @@ router.post('/add', async (req, res) => {
 
     try {
         const newTodo = new Todo({ name, comments, vote, showComment })
-        console.log("newTodo", newTodo);
-        await newTodo.save({ validateBeforeSave: true })
+        const saveData = await newTodo.save({ validateBeforeSave: true })
         return res.send({
             'status': true,
-            'message': `${name} has successfully added`
+            'message': `${name} has successfully added`,
+            'todo': saveData
         })
     } catch (err) {
-        console.log("err", err);
         return res.status(400).send({ 'status': false, 'message': err.message })
     }
 })
