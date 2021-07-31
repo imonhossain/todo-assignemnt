@@ -16,13 +16,14 @@ const todoSlice = createSlice({
       state.items.push(action.payload);
     },
     remove(state, action) {
-      state.items.splice(action.payload, 1);
+      const index = state.items.findIndex(item => item._id === action.payload);
+      state.items.splice(index, 1);
     },
     setTodo(state, action) {
       state.items = action.payload;
     },
     commentFlagChange(state, action) {
-      const index = action.payload;
+      const index = state.items.findIndex(item => item._id === action.payload);
       state.items[index].showComment = !state.items[index].showComment;
     },
     update(state, action) {
