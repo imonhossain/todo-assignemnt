@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   items: [
-    { name: 'Make toast' },
-    { name: 'Eat toast' },
-    { name: 'Wash dishes' },
+    { name: 'Make toast', date: new Date(), comments: ["abc", "Def", "Ghi"], vote: 0, showComment: true },
+    { name: 'Eat toast', date: new Date(), comments: ["abc", "Def", "Ghi"], vote: 0, showComment: false },
+    { name: 'Wash dishes', date: new Date(), comments: ["abc", "dasd", "Ghi"], vote: 0, showComment: false },
   ],
 };
 
