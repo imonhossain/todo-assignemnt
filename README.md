@@ -46,12 +46,6 @@ $ docker-compose up
 ```bash
 $ docker-compose down
 ```
-
-* For linux 
-
-```bash
-$ docker-compose up --build
-```
 ## Todo App
 ### [http://localhost/](http://localhost/)
 ![Web](todo-app.png)
