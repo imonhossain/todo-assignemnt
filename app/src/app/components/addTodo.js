@@ -1,10 +1,10 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   add
 } from '../../features/todo/todoSlice';
 import { toastSuccess } from '../services/ToasterService';
+import { addTodo } from '../services/TodoService';
 
 export function AddTodo() {
   const dispatch = useDispatch();
@@ -16,16 +16,13 @@ export function AddTodo() {
       comments: [],
       vote: 0
     }
-    const result = await axios.post(
-      `/todo/add`,
-      todoObj,
-    );
-    console.log("save result ", result)
-    if (result && result.data && result.data.status) {
-      toastSuccess(result.data.message);
-      dispatch(add(result.data.todo));
-      setName('');
-    }
+    addTodo(todoObj).then(result => {
+      if (result) {
+        toastSuccess(result.data.message)
+        dispatch(add(result.data.todo));
+        setName('');
+      }
+    });
   };
 
   return (
