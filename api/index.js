@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const app = express()
-
+const config = require('./config/app.config')();
 //require .env file
 require('dotenv').config()
 
@@ -15,7 +15,9 @@ app.use(bodyParser.urlencoded({ extended: true, }))
 //connect to mongoDb
 //mongodb://localhost:27017/todo
 //mongodb://mongo:27017/todo
-const uri = process.env.MONGO_URI
+
+const uri = `mongodb://${config.mongo.host}​​​:${config.mongo.port}​​​/todo`;
+
 mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
