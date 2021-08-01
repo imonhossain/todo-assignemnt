@@ -11,6 +11,9 @@ export function TodoComments({ todo }) {
 
   const onClickSendComment = async (todo) => {
     const updateObj = JSON.parse(JSON.stringify(todo));
+    if (!comment) {
+      return;
+    }
     updateObj.comments.push(comment);
     updateTodo(updateObj).then(result => {
       if (result) {
@@ -37,7 +40,7 @@ export function TodoComments({ todo }) {
         </button>
       </div>
       <ul>{todo.comments.map((comment, commentIndex) => (
-        <li key={commentIndex}>{commentIndex + 1}. {comment}</li>
+        <li className="bg-gray-200 rounded-sm p-1 pl-3 mb-2 comment-item" key={commentIndex}>{comment}</li>
       ))}</ul>
     </div>
   );

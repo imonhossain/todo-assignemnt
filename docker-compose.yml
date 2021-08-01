@@ -1,11 +1,13 @@
 version: '3'
 services:
-  # client:
-  #   build: ./client
-  #   ports:
-  #     - '80:80'
-  #   depends_on:
-  #     - api
+  client:
+   build: ./app
+   ports:
+     - '80:80'
+   depends_on:
+     - api
+   networks:
+     - todo-network
   api:
     build: ./api
     ports:
