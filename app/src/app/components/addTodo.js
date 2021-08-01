@@ -20,7 +20,6 @@ export function AddTodo() {
       `/todo/add`,
       todoObj,
     );
-    console.log("save result ", result)
     if (result && result.data && result.data.status) {
       toastSuccess(result.data.message);
       dispatch(add(result.data.todo));

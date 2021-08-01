@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   # client:
   #   build: ./client
@@ -12,9 +12,19 @@ services:
       - '8080:8080'
     depends_on:
       - mongo
+    networks:
+      - todo-network
   mongo:
     image: mongo
-    environment:
-      MONGO_INITDB_DATABASE: todo
     ports:
       - '27017:27017'
+    volumes:
+      - ./script/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./data/mongo-data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: todo
+    networks:
+      - todo-network
+networks:
+  todo-network:
+

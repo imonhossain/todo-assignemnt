@@ -93,6 +93,7 @@ export function Todo() {
                     onClick={() => onClickComment(todo._id)}
                     className="text-gray-500 hover:text-gray-600  cursor-pointer pr-2 text-2xl"
                   >
+                    <small className="text-base pr-1">{todo.comments.length}</small>
                     <span className="fa fa-comment" />
                   </div>
 
@@ -109,14 +110,11 @@ export function Todo() {
                 {
                   todo.showComment ? <TodoComments todo={todo} /> : null
                 }
-
               </div>
-
             </div>
           ))}
         </div>
       </div>
     </>
-
   );
 }

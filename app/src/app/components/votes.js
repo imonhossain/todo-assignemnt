@@ -9,6 +9,7 @@ import { updateTodo } from '../services/TodoService';
 
 export function Votes({ todo }) {
   const dispatch = useDispatch();
+
   const onClickUpVote = async (todo) => {
     const updateObj = JSON.parse(JSON.stringify(todo));
     updateObj.vote = updateObj.vote + 1;
