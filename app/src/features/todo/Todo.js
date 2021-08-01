@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { convertDateToString } from '../../app/services/Utilities';
-import axios from 'axios';
 import {
   remove,
   setTodo,
@@ -9,9 +8,10 @@ import {
   commentFlagChange
 } from './todoSlice';
 import { AddTodo } from '../../app/components/addTodo';
-import { toastError, toastSuccess } from '../../app/services/ToasterService';
+import { toastSuccess } from '../../app/services/ToasterService';
 import { Votes } from '../../app/components/votes';
 import { TodoComments } from '../../app/components/todoComments';
+import { getTodos, removeTodo } from '../../app/services/TodoService';
 
 export function Todo() {
   let todos = useSelector(selectTodos);
@@ -20,7 +20,7 @@ export function Todo() {
 
   useEffect(() => {
     try {
-      axios.get("/todo").then(result => {
+      getTodos().then(result => {
         let { data } = result.data;
         setTodos(data);
       })
@@ -38,22 +38,19 @@ export function Todo() {
   }
 
   const onClickRemove = async (id) => {
-    const result = await axios.delete(
-      `/todo/delete/${id}`
-    );
-    if (result && result.data && result.data.status === true) {
-      toastSuccess(result.data.message);
-      dispatch(remove(id));
-    } else {
-      toastError("Faild to delete");
-    }
+    removeTodo(id).then(result => {
+      if (result) {
+        toastSuccess(result.data.message);
+        dispatch(remove(id));
+      }
+    })
   }
   const onChangeSortBy = (value) => {
     setSortby(value)
     let sortArry = JSON.parse(JSON.stringify(todos));
-    if (value == 3) {
+    if (Number(value) === 3) {
       sortArry.sort((a, b) => (a.vote > b.vote) ? -1 : ((b.vote > a.vote) ? 1 : 0));
-    } else if (value == 2) {
+    } else if (Number(value) === 2) {
       sortArry.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : ((b.name.toLowerCase() > a.name.toLowerCase()) ? -1 : 0));
     } else {
       sortArry.sort((a, b) => (a.createdAt > b.createdAt) ? -1 : ((b.createdAt > a.createdAt) ? 1 : 0));
@@ -68,9 +65,9 @@ export function Todo() {
         <div className="flex items-center">
           <span className="pr-3">Sortby</span>
           <select value={sortby} onChange={e => onChangeSortBy(e.target.value)} className="flex-initial bg-gray-100 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-600 w-full mr-2 pl-4">
-            <option value="1">Create date</option>
-            <option value="2">Name </option>
-            <option value="3">Votes</option>
+            <option value={1}>Create date</option>
+            <option value={2}>Name </option>
+            <option value={3}>Votes</option>
           </select>
         </div>
       </div>
