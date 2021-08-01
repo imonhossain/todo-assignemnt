@@ -40,7 +40,7 @@ export function TodoComments({ todo }) {
         </button>
       </div>
       <ul>{todo.comments.map((comment, commentIndex) => (
-        <li className="bg-gray-200 rounded-sm p-1 pl-3 mb-2 comment-item" key={commentIndex}>{comment}</li>
+        <li className="bg-gray-200 rounded-sm p-1 pl-3 mb-1 comment-item" key={commentIndex}>{comment}</li>
       ))}</ul>
     </div>
   );
